@@ -1,0 +1,5 @@
+9 is a binhex palindrome (1001,9)
+40 is NOT a binhex palindrome (101000,28)
+1057 is NOT a binhex palindrome (10000100001,421)
+2005 is NOT a binhex palindrome (11111010101,7d5)
+2313 is a binhex palindrome (100100001001,909)

@@ -1,0 +1,99 @@
+#!/usr/bin/perl
+
+# cnc_teams single_sort
+# 
+# Note: This was my first attempt at a solution to this
+# problem.  However there are some edge test cases where
+# this solution fails, thus the multi-sort version is 
+# what I used to generate the answers to the test cases
+#
+#                                             - krux
+
+# for debugging
+use Data::Dumper;
+
+%team_members = ();
+@teams = ();
+@final_teams = ();
+
+while(<>) {
+   # strip trailing white space
+   $_ =~ s/\s+$//;
+
+   if(!$teamcount)
+   {
+     # get the team count
+     $teamcount = $_ + 0;
+     $i = 0;
+   }
+   else
+   {
+     $i++;
+
+     if($i <= $teamcount)
+     {
+       # still expecting input
+       $_ =~ /()/;
+       if($_ =~ /(.*)\s&\s(.*)/)
+       {
+         $team_members{$1}++;
+         $team_members{$2}++;
+         push(@teams,{ name => $_ , member => $1 });
+         push(@teams,{ name => $_ , member => $2 });
+       }
+       else
+       {
+         $team_members{$_}++;
+         $team_members{"$_ - solo"}++;
+         push(@teams,{ name => $_ , member => $_ });
+         push(@teams,{ name => "$_" , member => "$_ - solo" });
+       }
+     }
+
+     if($i eq $teamcount)
+     {
+       # received all expected input, now time to process it
+
+       foreach $value (sort {$team_members{$a} <=> $team_members{$b} } keys %team_members)
+       {
+         if($team_members{$value})
+         {
+           # matching teams
+           if(@matching = grep { $_->{member} eq $value } @teams)
+           {
+             # add matching team to stack
+             push(@final_teams,$matching[0]{name});
+
+             # grab list of members for team
+             @matching = grep { $_->{name} eq $matching[0]{name} } @teams;
+             foreach $hashref (@matching)
+             {
+               $team_members{${$hashref}{member}} = 0;
+
+               # for each team member 
+               # find all teams that match
+               # remove them from the list
+               @matching_teams = grep { $_->{member} eq ${$hashref}{member} } @teams;
+               foreach $hashref2 (@matching_teams)
+               {
+                 @teams = grep { $_->{name} ne ${$hashref2}{name} } @teams;
+               }
+             }
+           }
+         }
+       }
+
+       print ($#final_teams + 1);
+       print " Teams\n";
+       print Dumper(\@final_teams);
+
+       $teamcount = 0;
+       %team_members = ();
+       @teams = ();
+       @final_teams = ();
+     }
+   }
+}
+
+
+
