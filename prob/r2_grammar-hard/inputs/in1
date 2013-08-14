@@ -1,0 +1,9 @@
+S -> aB|bB|ccC|ddD
+B -> bC|Dc|d|a|CC
+C -> ccab|c|cd|uber|DE
+D -> ab|cd
+E -> e
+abc
+acb
+bbc
+bac
