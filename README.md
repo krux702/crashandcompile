@@ -1,3 +1,10 @@
+## Crash and Compile Repo Moved
+
+We needed the ability to host private repos for Crash and Compile, so we migrated to BitBucket some time ago for Crash and Compile
+
+https://bitbucket.org/crashandcompile/
+
+
 ## Crash and Compile
 
 _"A programming contest crossed with a drinking game. What can possibly go wrong?"_
